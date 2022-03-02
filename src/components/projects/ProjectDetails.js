@@ -12,8 +12,10 @@ class ProjectDetails extends Component {
     this.props.history.push("/");
   };
   handleEdit = () => {
-    this.props.history.push("/create", {state:this.props.projectId});
-  }
+    this.props.history.push("/create", {
+      state: this.props.projectId,
+    });
+  };
 
   render() {
     console.log(this.props.project);

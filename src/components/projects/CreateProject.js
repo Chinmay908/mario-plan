@@ -4,16 +4,24 @@ import { createProject, editProject } from "../../store/actions/projectActions";
 import { Redirect, withRouter } from "react-router-dom";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+
 class CreateProject extends Component {
   state = {
     title: "",
     content: "",
   };
+
+  edit = {
+    setEdit: true,
+  };
+
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
     });
+    console.log(this.state);
   };
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.createProject(this.state);
@@ -23,12 +31,26 @@ class CreateProject extends Component {
   handleEditchange = (e) => {
     e.preventDefault();
     const projectId = this.props.location.state;
+    console.log(projectId);
     this.props.editProject(this.state, projectId.state);
     this.props.history.push("/");
   };
+
   render() {
-    const { auth } = this.props;
+    const { auth, projects } = this.props;
     const projectId = this.props.location.state;
+    if (projectId && this.edit.setEdit) {
+      const project = projects ? projects[projectId.state] : null;
+      // console.log(project);
+      if (projectId.state) {
+        this.setState({
+          title: project.title,
+          content: project.content,
+        });
+        this.edit.setEdit = false;
+      }
+    }
+    // console.log(newProject);
     // console.log(projectId.state);
     if (!auth.uid) return <Redirect to="/signin" />;
     return (
@@ -41,20 +63,41 @@ class CreateProject extends Component {
             {projectId ? "Edit Project" : "Create New Project"}
           </h5>
           <div className="input-field">
-            <label htmlFor="title">Title</label>
-            <input type="text" id="title" onChange={this.handleChange} />
+            <label htmlFor="title" className="active">
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              onChange={this.handleChange}
+              value={this.state.title}
+              required
+            />
           </div>
           <div className="input-field">
-            <label htmlFor="content">Project Content</label>
+            <label htmlFor="content" className="active">
+              Project Content
+            </label>
             <textarea
               id="content"
               className="materialize-textarea"
               onChange={this.handleChange}
+              value={this.state.content}
+              required
             ></textarea>
           </div>
           <div className="input-field">
-            <button className="btn pink lighten-1 z-depth-0">
-              {projectId ? "edit" : "create"}
+            <button
+              className="btn pink lighten-1 z-depth-0"
+              style={{ marginRight: "20px" }}
+            >
+              {projectId ? "save" : "create"}
+            </button>
+            <button
+              className="btn pink lighten-1 z-depth-0"
+              onClick={() => this.props.history.push("/")}
+            >
+              cancel
             </button>
           </div>
         </form>
@@ -63,10 +106,10 @@ class CreateProject extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  // const projects = state.firestore.data.projects;
+  const projects = state.firestore.data.projects;
   return {
     auth: state.firebase.auth,
-    // project: projects,
+    projects: projects,
   };
 };
 const mapDispatchToProps = (dispatch) => {
