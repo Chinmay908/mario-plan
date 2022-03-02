@@ -29,8 +29,8 @@ This is the Edit Project page where the user can edit its own project.
 ![editpage](/src/img/editproject.png)
 
 ## Tech Stack
-Front End - React Js
-Back End - Google Firebase
+* Front End - React Js
+* Back End - Google Firebase
 
 ## Demonstration
 
