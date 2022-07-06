@@ -1,4 +1,4 @@
-# Mario-plan
+# MyBlogs
 
 ## Introduction
 This is a react application where users can post their projects. It also provides edit and delete fucntionality.
@@ -34,7 +34,7 @@ This is the Edit Project page where the user can edit its own project.
 
 ## Demonstration
 
-Click [here](https://net-ninja-marioplan-53eec.web.app/signin) to post your project on Marioplan.
+Click [here](https://net-ninja-marioplan-53eec.web.app/signin) to post your project on MyBlogs.
 
 ## Author
 Chinmay Palav
